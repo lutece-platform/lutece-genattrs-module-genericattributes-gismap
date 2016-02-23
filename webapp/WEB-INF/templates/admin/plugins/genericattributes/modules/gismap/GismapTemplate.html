@@ -14,11 +14,7 @@
 <input type="hidden" id="${entry.idEntry}_latAddress" name="${entry.idEntry}_latAddress" />
 
 <div id="map_canvas" class="map" >
-<#include "script.html">
-
-<#include "card_frame.html">
-
-<#include "gis.html">
+	<#include entry.gismapProvider.includeFile />
 </div>
 <div style="clear:both;"></div>
 

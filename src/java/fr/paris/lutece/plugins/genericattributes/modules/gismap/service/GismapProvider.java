@@ -34,12 +34,25 @@
 package fr.paris.lutece.plugins.genericattributes.modules.gismap.service;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import fr.paris.lutece.plugins.genericattributes.business.IGismapProvider;
+import fr.paris.lutece.plugins.genericattributes.business.IResponseDAO;
+import fr.paris.lutece.plugins.genericattributes.business.Response;
+import fr.paris.lutece.plugins.gismap.business.AddressParam;
+import fr.paris.lutece.plugins.gismap.business.AddressParamHome;
+import fr.paris.lutece.plugins.gismap.business.Geometry;
+import fr.paris.lutece.plugins.gismap.business.GeometryHome;
+import fr.paris.lutece.plugins.gismap.business.IGeometryDAO;
 import fr.paris.lutece.plugins.gismap.business.MapParameter;
 import fr.paris.lutece.plugins.gismap.business.View;
 import fr.paris.lutece.plugins.gismap.business.ViewHome;
+import fr.paris.lutece.portal.service.spring.SpringContextService;
+import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.ReferenceItem;
+import fr.paris.lutece.util.html.HtmlTemplate;
 
 
 /**
@@ -53,6 +66,9 @@ public class GismapProvider implements IGismapProvider
     private static final String PROPERTY_KEY = "genericattributes-gismap.key";
     private static final String PROPERTY_DISPLAYED_NAME = "genericattributes-gismap.displayName";
     private static final String TEMPLATE_HTML = "/admin/plugins/genericattributes/modules/gismap/GismapTemplate.html";
+    
+    public static final String GISMAP_VIEW_INIT = "gismap.view.GENATT";
+    
 
     /**
      * {@inheritDoc}
@@ -101,11 +117,38 @@ public class GismapProvider implements IGismapProvider
     }
 
 	@Override
-	public MapParameter getParameter() {
+	public AddressParam getAddParameter() 
+	{
+		return AddressParamHome.getAddressParameters();
+	}
+
+	@Override
+	public void createGeometry( Response response) {
 		// TODO Auto-generated method stub
-		View view = ViewHome.findByPrimaryKey(1);
-        
+		
+		Geometry geometry = GeometryHome.findResponseValueByKey("GEO");
+		if(response.getIdResponse()==geometry.getId())
+		{
+			geometry.setThematic("TEST");
+			GeometryHome.create(geometry);
+		}
+		
+	}
+
+	@Override
+	public MapParameter getViewParameter() {
+		// TODO Auto-generated method stub
+		String strInitView = AppPropertiesService.getProperty( GISMAP_VIEW_INIT );
+        View view = ViewHome.findByPrimaryKey(Integer.parseInt(strInitView));
 		return view.getMapParameter();
+	}
+
+	@Override
+	public String getIncludeFile() {
+		// TODO Auto-generated method stub
+		String strInitView = AppPropertiesService.getProperty( GISMAP_VIEW_INIT );
+        View view = ViewHome.findByPrimaryKey(Integer.parseInt(strInitView));
+		return view.getMapTemplateFile();
 	}
 
 	
