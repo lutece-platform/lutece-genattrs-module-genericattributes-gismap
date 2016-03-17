@@ -109,38 +109,4 @@ public class GismapProvider implements IMapProvider
         View view = ViewHome.findByPrimaryKey(Integer.parseInt(strInitView));
 		return view;
 	}
-
-	//@Override
-	/*public void saveResponseUsedByGeoserver( List<Response> listResponse) {
-		
-		ResponseUsedByGeoserver responseUsedByGeoserver = null;
-    	for( Response response : listResponse )
-    	{
-    		if( response.getEntry().getMapProvider() != null )
-    		{
-    			if( response.getField().getTitle().compareTo( "idGeo" ) == 0 )
-        		{
-    				responseUsedByGeoserver = new ResponseUsedByGeoserver();
-    				responseUsedByGeoserver.setId( Integer.parseInt( response.getResponseValue( ) ) );
-        		}
-        		if( response.getField( ).getTitle( ).compareTo( "descGeo" ) == 0 )
-        		{
-        			responseUsedByGeoserver.setDescGeo( response.getResponseValue( ) );
-        		}
-        		if( response.getField( ).getTitle( ).compareTo( "cenGeo" ) == 0 )
-        		{
-        			responseUsedByGeoserver.setCentroidGeo( response.getResponseValue() );
-        		}
-        		
-    		}
-    	}
-    	if( responseUsedByGeoserver != null )
-    	{
-    		ResponseUsedByGeoserverHome.create(responseUsedByGeoserver);
-    	}
-	}*/
-
-	
-
-
 }
