@@ -1,22 +1,18 @@
-<input type="hidden" id="${entry.idEntry}_map_provider" name="${entry.idEntry}_map_provider" value="${entry.gismapProvider.key}"/>
-<div class="form-element" id="${entry.idEntry}_waiting" style="display:none;">
-  <span class="form-label">
-	<label for="">&nbsp;</label>
-  </span>
-  <span class="form-field-column">
-  	#i18n{module.directory.gismap.loading}
-  </span>
-</div>
-<div style="float:left; width:45%">
-</div>
+<#assign editModeValue = "">
+<#if entry.fields?? && entry.fields?has_content>
+	<#list entry.fields as field>
+		<#if field?? && field.title = "editMode">
+			<#assign editModeValue = field.value >
+			<#break>
+		</#if>
+	</#list>
+</#if>
+<#assign fieldParam = {"TypeEdit" : "${editModeValue}", "GeomGeoJson" : "${entry.idEntry}_geometry", "GeomCentroidX" : "${entry.idEntry}_x", "GeomCentroidY" : "${entry.idEntry}_y", "GeomState":"GeomState"} >
 
-<input type="hidden" id="${entry.idEntry}_lngAddress" name="${entry.idEntry}_lngAddress" />
-<input type="hidden" id="${entry.idEntry}_latAddress" name="${entry.idEntry}_latAddress" />
+<input type="hidden" id="${entry.idEntry}_map_provider" name="${entry.idEntry}_map_provider" value="${entry.mapProvider.key}"/>
 
-<div id="map_canvas" class="map" >
-	<#include entry.gismapProvider.includeFile />
-</div>
-<div style="clear:both;"></div>
+<#include entry.mapProvider.parameter.mapTemplateFile />
+
 
 <script src="js/autocomplete/external/jquery/jquery.js"></script>
 <script src="js/autocomplete/jquery-ui.js"></script>
@@ -25,11 +21,11 @@
 	$("#${entry.idEntry}_address").autocomplete({
 		source : function(request, reponse){ // les deux arguments représentent les données nécessaires au plugin
 		$.ajax({
-			url : "https://p89-ws.apps.paris.fr/SuggestPOI/rest/services/SuggestPOI.jsp",
+			url : "${add_parameter.url}",
 		    dataType: "jsonp",
 		    data: {
-		    	clientId : "gismap",
-				nbResults : 5, 
+		    	clientId : "${add_parameter.clientId}",
+				nbResults : ${add_parameter.nbResult}, 
 				query : request.term
 		    },
 		    success : function(data){
@@ -41,8 +37,11 @@
         	});
     	},
     	select : function(event, ui){
-    		$('#${entry.idEntry}_lngAddress').val(ui.item.x);
-    		$('#${entry.idEntry}_latAddress').val(ui.item.y);
+    		$('#${entry.idEntry}_x').val(ui.item.x);
+    		$('#${entry.idEntry}_y').val(ui.item.y);
+    		$('#${entry.idEntry}_idAddress').val(ui.item.id);
+    		$('#${entry.idEntry}_additional_address').val(getAdditionalAdd(ui.item.label));
+    		zoom.zoomSuggestPoi(ui.item.x, ui.item.y);
         }
 	}).focus();
 	function getResult(result) {
@@ -54,11 +53,55 @@
 			object.label = result[index].libelleTypo;
 			object.x = result[index].x;
 			object.y = result[index].y;
+			object.id = result[index].id;
 			resultArray.push(object);
 		}
 		return resultArray;	
     };
-    	
+    function getAdditionalAdd (address)
+    {
+    	var addTab = address.split(",");
+		var addCompTab = addTab[1].split(" ");
+		var additionalAdd = addCompTab[1];
+		var additionalAddress = "";
+		switch ( additionalAdd ) {
+		    case "75001": additionalAddress = "1er arrondissement"; break;
+		    case "75002": additionalAddress = "2e arrondissement"; break;
+		    case "75003": additionalAddress = "3e arrondissement"; break;
+		    case "75004": additionalAddress = "4e arrondissement"; break;
+		    case "75005": additionalAddress = "5e arrondissement"; break;
+		    case "75006": additionalAddress = "6e arrondissement"; break;
+		    case "75007": additionalAddress = "7e arrondissement"; break;
+		    case "75008": additionalAddress = "8e arrondissement"; break;
+		    case "75009": additionalAddress = "9e arrondissement"; break;
+		    case "75010": additionalAddress = "10e arrondissement"; break;
+		    case "75011": additionalAddress = "11e arrondissement"; break;
+		    case "75012": additionalAddress = "12e arrondissement"; break;
+		    case "75013": additionalAddress = "13e arrondissement"; break;
+		    case "75014": additionalAddress = "14e arrondissement"; break;
+		    case "75015": additionalAddress = "15e arrondissement"; break;
+		    case "75016": additionalAddress = "16e arrondissement"; break;
+		    case "75017": additionalAddress = "17e arrondissement"; break;
+		    case "75018": additionalAddress = "18e arrondissement"; break;
+		    case "75019": additionalAddress = "19e arrondissement"; break;
+		    case "75020": additionalAddress = "20e arrondissement"; break;
+		    default: additionalAddress = addCompTab[2];
+		}
+		return additionalAddress;
+    };
+    function getValidString(st)
+    {
+    	var l = st.length;
+    	var i;
+    	for(i = 0; i<l; i++)
+    	{
+    		if(st[i]=='"')
+    		{
+    			st = st.substr(0, i) + "'" + st.substr(i+1, l);
+    		}
+    	}
+    	return st;
+    };
 </script>
 
 <noscript>#i18n{module.genericattributes.gismap.javascript.disabled}</noscript>

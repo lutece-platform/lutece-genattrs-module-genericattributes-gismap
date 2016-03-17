@@ -34,25 +34,11 @@
 package fr.paris.lutece.plugins.genericattributes.modules.gismap.service;
 
 
-import java.util.HashMap;
-import java.util.Map;
-
-import fr.paris.lutece.plugins.genericattributes.business.IGismapProvider;
-import fr.paris.lutece.plugins.genericattributes.business.IResponseDAO;
-import fr.paris.lutece.plugins.genericattributes.business.Response;
-import fr.paris.lutece.plugins.gismap.business.AddressParam;
-import fr.paris.lutece.plugins.gismap.business.AddressParamHome;
-import fr.paris.lutece.plugins.gismap.business.Geometry;
-import fr.paris.lutece.plugins.gismap.business.GeometryHome;
-import fr.paris.lutece.plugins.gismap.business.IGeometryDAO;
-import fr.paris.lutece.plugins.gismap.business.MapParameter;
+import fr.paris.lutece.plugins.genericattributes.business.IMapProvider;
 import fr.paris.lutece.plugins.gismap.business.View;
 import fr.paris.lutece.plugins.gismap.business.ViewHome;
-import fr.paris.lutece.portal.service.spring.SpringContextService;
-import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.ReferenceItem;
-import fr.paris.lutece.util.html.HtmlTemplate;
 
 
 /**
@@ -60,7 +46,7 @@ import fr.paris.lutece.util.html.HtmlTemplate;
  * GisProvider : provides Gismap support for Generic Attributes
  * 
  */
-public class GismapProvider implements IGismapProvider
+public class GismapProvider implements IMapProvider
 {
     private static final long serialVersionUID = 6224042984367506762L;
     private static final String PROPERTY_KEY = "genericattributes-gismap.key";
@@ -115,42 +101,46 @@ public class GismapProvider implements IGismapProvider
     {
         return "Gismap Provider";
     }
-
-	@Override
-	public AddressParam getAddParameter() 
-	{
-		return AddressParamHome.getAddressParameters();
-	}
-
-	@Override
-	public void createGeometry( Response response) {
-		// TODO Auto-generated method stub
-		
-		Geometry geometry = GeometryHome.findResponseValueByKey("GEO");
-		if(response.getIdResponse()==geometry.getId())
-		{
-			geometry.setThematic("TEST");
-			GeometryHome.create(geometry);
-		}
-		
-	}
-
-	@Override
-	public MapParameter getViewParameter() {
+    
+    @Override
+	public View getParameter() {
 		// TODO Auto-generated method stub
 		String strInitView = AppPropertiesService.getProperty( GISMAP_VIEW_INIT );
         View view = ViewHome.findByPrimaryKey(Integer.parseInt(strInitView));
-		return view.getMapParameter();
+		return view;
 	}
 
-	@Override
-	public String getIncludeFile() {
-		// TODO Auto-generated method stub
-		String strInitView = AppPropertiesService.getProperty( GISMAP_VIEW_INIT );
-        View view = ViewHome.findByPrimaryKey(Integer.parseInt(strInitView));
-		return view.getMapTemplateFile();
-	}
+	//@Override
+	/*public void saveResponseUsedByGeoserver( List<Response> listResponse) {
+		
+		ResponseUsedByGeoserver responseUsedByGeoserver = null;
+    	for( Response response : listResponse )
+    	{
+    		if( response.getEntry().getMapProvider() != null )
+    		{
+    			if( response.getField().getTitle().compareTo( "idGeo" ) == 0 )
+        		{
+    				responseUsedByGeoserver = new ResponseUsedByGeoserver();
+    				responseUsedByGeoserver.setId( Integer.parseInt( response.getResponseValue( ) ) );
+        		}
+        		if( response.getField( ).getTitle( ).compareTo( "descGeo" ) == 0 )
+        		{
+        			responseUsedByGeoserver.setDescGeo( response.getResponseValue( ) );
+        		}
+        		if( response.getField( ).getTitle( ).compareTo( "cenGeo" ) == 0 )
+        		{
+        			responseUsedByGeoserver.setCentroidGeo( response.getResponseValue() );
+        		}
+        		
+    		}
+    	}
+    	if( responseUsedByGeoserver != null )
+    	{
+    		ResponseUsedByGeoserverHome.create(responseUsedByGeoserver);
+    	}
+	}*/
 
 	
+
 
 }

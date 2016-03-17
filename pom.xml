@@ -51,6 +51,13 @@
 	<properties>
 		<componentName>genericattributes-gismap</componentName>
 		<jiraProjectName>MGENATTGIS</jiraProjectName>
+		<jiraComponentId>12938</jiraComponentId>
 	</properties>
-    
+
+    <scm>
+        <connection>scm:git:https://github.com/lutece-platform/lutece-genattrs-module-genericattributes-gismap.git</connection>
+        <developerConnection>scm:git:https://github.com/lutece-platform/lutece-genattrs-module-genericattributes-gismap.git</developerConnection>
+        <url>https://github.com/lutece-platform/lutece-genattrs-module-genericattributes-gismap.git</url>
+      <tag>HEAD</tag>
+  </scm>
 </project>
