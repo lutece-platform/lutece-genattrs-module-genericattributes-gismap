@@ -7,7 +7,7 @@
 		</#if>
 	</#list>
 </#if>
-<#assign fieldParam = {"TypeEdit" : "${editModeValue}", "GeomGeoJson" : "${entry.idEntry}_geometry", "GeomCentroidX" : "${entry.idEntry}_x", "GeomCentroidY" : "${entry.idEntry}_y", "GeomState":"GeomState"} >
+<#assign fieldParam = {"TypeEdit" : "${editModeValue}", "GeomGeoJson" : "${entry.idEntry}_geometry", "GeomCentroidXStockage" : "${entry.idEntry}_x", "GeomCentroidYStockage" : "${entry.idEntry}_y", "GeomCentroidXGeocodage" : "GeomCentroidXGeocodage", "GeomCentroidYGeocodage" : "GeomCentroidYGeocodage", "GeomState" : "GeomState"} >
 
 <input type="hidden" id="${entry.idEntry}_map_provider" name="${entry.idEntry}_map_provider" value="${entry.mapProvider.key}"/>
 
