@@ -7,12 +7,18 @@
 		</#if>
 	</#list>
 </#if>
-<#assign fieldParam = {"TypeEdit" : "${editModeValue}", "GeomGeoJson" : "${entry.idEntry}_geometry", "GeomCentroidXStockage" : "${entry.idEntry}_x", "GeomCentroidYStockage" : "${entry.idEntry}_y", "GeomCentroidXGeocodage" : "GeomCentroidXGeocodage", "GeomCentroidYGeocodage" : "GeomCentroidYGeocodage", "GeomState" : "GeomState"} >
+<#assign viewNumberValue = "">
+<#if entry.fields?? && entry.fields?has_content>
+	<#list entry.fields as field>
+		<#if field?? && field.title = "viewNumber">
+			<#assign viewNumberValue = field.value >
+			<#break>
+		</#if>
+	</#list>
+</#if>
+<#assign fieldParam = {"TypeEdit" : "${editModeValue}", "GeomGeoJson" : "${entry.idEntry}_geometry", "GeomCentroidXStockage" : "${entry.idEntry}_x", "GeomCentroidYStockage" : "${entry.idEntry}_y", "GeomCentroidXGeocodage" : "${entry.idEntry}_geomCentroidXGeocodage", "GeomCentroidYGeocodage" : "${entry.idEntry}_geomCentroidYGeocodage", "GeomState" : "${entry.idEntry}_geomState", "UrlGeoJSON1" : ""} >
 
-<input type="hidden" id="${entry.idEntry}_map_provider" name="${entry.idEntry}_map_provider" value="${entry.mapProvider.key}"/>
-
-<#include entry.mapProvider.parameter.mapTemplateFile />
-
+<#include entry.mapProvider.getParameter(viewNumberValue?number).mapTemplateFile />
 
 <script src="js/autocomplete/external/jquery/jquery.js"></script>
 <script src="js/autocomplete/jquery-ui.js"></script>
@@ -89,19 +95,10 @@
 		}
 		return additionalAddress;
     };
-    function getValidString(st)
-    {
-    	var l = st.length;
-    	var i;
-    	for(i = 0; i<l; i++)
-    	{
-    		if(st[i]=='"')
-    		{
-    			st = st.substr(0, i) + "'" + st.substr(i+1, l);
-    		}
-    	}
-    	return st;
-    };
+    
+   // $(':input').click(function(){
+    //	editorTools.forceValidate();
+    //});
 </script>
 
 <noscript>#i18n{module.genericattributes.gismap.javascript.disabled}</noscript>

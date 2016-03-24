@@ -53,9 +53,7 @@ public class GismapProvider implements IMapProvider
     private static final String PROPERTY_DISPLAYED_NAME = "genericattributes-gismap.displayName";
     private static final String TEMPLATE_HTML = "/admin/plugins/genericattributes/modules/gismap/GismapTemplate.html";
     
-    public static final String GISMAP_VIEW_INIT = "gismap.view.GENATT";
     
-
     /**
      * {@inheritDoc}
      */
@@ -103,10 +101,9 @@ public class GismapProvider implements IMapProvider
     }
     
     @Override
-	public View getParameter() {
-		// TODO Auto-generated method stub
-		String strInitView = AppPropertiesService.getProperty( GISMAP_VIEW_INIT );
-        View view = ViewHome.findByPrimaryKey(Integer.parseInt(strInitView));
+	public View getParameter( int nKey) {
+		
+        View view = ViewHome.findByPrimaryKey( nKey );
 		return view;
 	}
 }
