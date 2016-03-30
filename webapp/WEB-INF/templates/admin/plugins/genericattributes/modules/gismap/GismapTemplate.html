@@ -2,7 +2,18 @@
 <#if entry.fields?? && entry.fields?has_content>
 	<#list entry.fields as field>
 		<#if field?? && field.title = "editMode">
-			<#assign editModeValue = field.value >
+			<#if field.value == "Address" || field.value == "Adresse" >
+				<#assign editModeValue = "SuggestPOI" >
+			</#if>
+			<#if field.value == "Point" >
+				<#assign editModeValue = "Point" >
+			</#if>
+			<#if field.value == "Line" || field.value == "Ligne">
+				<#assign editModeValue = "LineString" >
+			</#if>
+			<#if field.value == "Polygon" || field.value == "Polygone">
+				<#assign editModeValue = "Polygon" >
+			</#if>
 			<#break>
 		</#if>
 	</#list>
