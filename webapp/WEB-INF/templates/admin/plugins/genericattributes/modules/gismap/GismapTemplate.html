@@ -27,7 +27,7 @@
 		</#if>
 	</#list>
 </#if>
-<#assign fieldParam = {"TypeEdit" : "${editModeValue}", "GeomGeoJson" : "${entry.idEntry}_geometry", "GeomCentroidXStockage" : "${entry.idEntry}_x", "GeomCentroidYStockage" : "${entry.idEntry}_y", "GeomCentroidXGeocodage" : "${entry.idEntry}_geomCentroidXGeocodage", "GeomCentroidYGeocodage" : "${entry.idEntry}_geomCentroidYGeocodage", "GeomState" : "${entry.idEntry}_geomState", "ExtentCurrent" : "${entry.idEntry}_extentCurrent", "VisibleLayer" : "${entry.idEntry}_visibleLayer", "UrlGeoJSON1" : ""} >
+<#assign fieldParam = {"TypeEdit" : "${editModeValue}", "GeomGeoJson" : "${entry.idEntry}_geometry", "GeomCentroidXStockage" : "${entry.idEntry}_x", "GeomCentroidYStockage" : "${entry.idEntry}_y", "GeomCentroidXGeocodage" : "${entry.idEntry}_geomCentroidXGeocodage", "GeomCentroidYGeocodage" : "${entry.idEntry}_geomCentroidYGeocodage", "GeomState" : "${entry.idEntry}_geomState", "ExtentCurrent" : "${entry.idEntry}_extentCurrent", "VisibleLayer" : "${entry.idEntry}_visibleLayer", "UrlGeoJSON1" : "", "Proxy" : "rest/gismapp/gisproxy?url="} >
 
 <#include entry.mapProvider.getParameter(viewNumberValue?number).mapTemplateFile />
 
@@ -118,11 +118,6 @@
     	    jsonpCallback: 'callback',
             success: function( data ) {
     			var address = data.Adresse_tot+", "+data.Codepostal+" ";
-            	$("#${entry.idEntry}_address").val(address);
-    			$("#${entry.idEntry}_additional_address").val(getAdditionalAdd(address));
-        	}, 
-        	error: function(){
-        		var address = "227 rue de Bercy, 75012 PARIS";
             	$("#${entry.idEntry}_address").val(address);
     			$("#${entry.idEntry}_additional_address").val(getAdditionalAdd(address));
         	}
